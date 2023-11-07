@@ -1,0 +1,21 @@
+{
+  "name": "plugin-flex-preview-dialer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Flex Preview Dialer Plugin includes the capability to upload a contacts list and programmatically generate a preview dialing task for each contact",
+  "scripts": {
+    "postinstall": "flex-plugin pre-script-check"
+  },
+  "dependencies": {
+    "moment": "^2.29.1",
+    "react": "16.5.2",
+    "react-csv-reader": "^3.3.1",
+    "react-dom": "16.5.2",
+    "react-input-mask": "^2.0.4",
+    "@twilio/flex-plugin-scripts": "6.2.1"
+  },
+  "devDependencies": {
+    "@twilio/flex-ui": "^1",
+    "react-test-renderer": "16.5.2"
+  }
+}

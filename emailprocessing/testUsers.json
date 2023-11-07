@@ -1,0 +1,36 @@
+[
+  {
+    "fullName": "Randall Ridley1",
+    "fullAddress": "777 Preston St. Houston, TX 77062",
+    "address": "777 Preston St.",
+    "city": "Houston",
+    "state": "TX",
+    "zip": "77002",
+    "phone": "7348901810",
+    "email": "randall.ridley@gmail.com",
+    "dnc": "",
+    "emailSubject": "Investor interested in buying your house at 777 Preston St. in Houston, TX",
+    "emailBody": "Hello Randall1,\nMy name is Taneicia and I'm an investor interested in buying your house at 777 Preston St. in Houston, TX.\nI'd like to make a cash off for the house as-is.\nPlease feel free to respond by email or give me a call at (734) 890-1810.\n\nThank you,\n\nTaneicia",
+    "htmlBody": "<div>Hello Randall1,<br><br>\nMy name is Taneicia and I'm an investor interested in buying your house at 777 Preston St. in Houston, TX. I'd like to make a cash off for the house as-is.<br><br>\nPlease feel free to respond by email or give me a call at (734) 890-1810.<br>\n<br>\nThank you,<br><br>\n\nTaneicia</div>",
+    "date": 1695837793642,
+    "formatted": "2023/9/27 13:3:13 642",
+    "sender": "Taneicia Broussard"
+  },
+  {
+    "fullName": "Randall Ridley2",
+    "fullAddress": "111 Main St. Houston, TX 77062",
+    "address": "111 Main St.",
+    "city": "Houston",
+    "state": "TX",
+    "zip": "77002",
+    "phone": "3135552222",
+    "email": "ridleytech@gmail.com",
+    "dnc": "",
+    "emailSubject": "Investor interested in buying your house at 111 Main St. in Houston, TX",
+    "emailBody": "Hello Randall2,\nMy name is Ava and I'm an investor interested in buying your house at 111 Main St. in Houston, TX.\nI'd like to make a cash off for the house as-is.\nPlease feel free to respond by email or give me a call at (734) 890-1810.\n\nThank you,\n\nAva",
+    "htmlBody": "<div>Hello Randall2,<br><br>\nMy name is Ava and I'm an investor interested in buying your house at 111 Main St. in Houston, TX. I'd like to make a cash off for the house as-is.<br><br>\nPlease feel free to respond by email or give me a call at (734) 890-1810.<br>\n<br>\nThank you,<br><br>\n\nAva</div>",
+    "date": 1695837793642,
+    "formatted": "2023/9/27 13:3:13 642",
+    "sender": "Ava Maxwell"
+  }
+]

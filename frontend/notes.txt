@@ -1,0 +1,9 @@
+https://socket.io/how-to/use-with-react
+https://www.twilio.com/docs/voice/sdks/javascript/twiliocall#disconnect-event
+https://www.twilio.com/docs/voice/sdks/javascript/twiliocall#callacceptacceptoptions
+
+Learn Twilio Messaging, Voice, and Serverless (Full Course!)
+https://www.youtube.com/watch?v=4jUMqutYmyE
+
+CREATE A CALL CENTER IN 15 MINUTES USING NODEJS , TWILIO , SOCKET.IO
+https://www.youtube.com/watch?v=VvxB_TPj3DY

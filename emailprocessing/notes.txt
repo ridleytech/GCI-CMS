@@ -1,0 +1,14 @@
+https://app.sendgrid.com/guide/integrate/langs/nodejs
+https://docs.sendgrid.com/api-reference/mail-send/mail-send#multiple-reply-to-emails
+
+
+// const msg = {
+//   to: user.email,
+//   from: {
+//     email: "gulfcoastinvestmentsgroup@gmail.com",
+//     name: "Ava M",
+//   },
+//   subject: user.emailSubject,
+//   text: user.emailBody,
+//   html: user.htmlBody,
+// };
