@@ -132,3 +132,5 @@ emailprocessing/data
 emailprocessing/output
 *.xlsx
 *.csv
+
+flex-preview-dialer-main/flex-dialer-configuration.txt
