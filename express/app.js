@@ -5,14 +5,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var dotenv = require("dotenv");
 const cors = require("cors");
+const axios = require("axios");
 
 dotenv.config();
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
 
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
-const ClientCapability = require("twilio").jwt.ClientCapability;
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -56,17 +53,46 @@ app.post("/receive", function (req, res, next) {
   }
 });
 
-app.post("/twilioCall", function (req, res, next) {
-  //  console.log("twilioCall body", req.body);
+app.post("/twilioCall", async function (req, res, next) {
+  // console.log("twilioCall body", req.body);
 
-  io.emit("callComing", { data: req.body });
+  if (req.body.To == "+18327862657" && CallStatus == "ringing") {
+    io.emit("callComing", { data: req.body });
 
-  const twiml = new VoiceResponse();
-  twiml.say({ voice: "man", loop: 1000 }, "Thank you for calling The R");
-  res.type("text/xml");
-  res.send(twiml.toString());
+    const twiml = new VoiceResponse();
+    twiml.say({ voice: "man", loop: 1000 }, "Thank you for calling The R");
+    res.type("text/xml");
+    res.send(twiml.toString());
+  } else if (
+    req.body.CallStatus == "ringing" &&
+    req.body.Caller.includes("client:")
+  ) {
+    const to = req.body.To;
+    const from = "+18327862657";
 
-  // res.send({ status: "hi twilio" });
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `http://localhost:3001/calls/clientOutbound`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: { to: to, from: from },
+    };
+
+    const xml = await axios
+      .request(config)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("clientOutbound error:", error);
+      });
+
+    // console.log("xml", xml);
+    res.type("text/xml");
+    res.send(xml.toString());
+  }
 });
 
 // catch 404 and forward to error handler
@@ -86,66 +112,3 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = { app, server };
-
-// bodyCallComesIn = {
-//   AccountSid: "AC1feb8c93dd05ee5c790948521f427b55",
-//   ApiVersion: "2010-04-01",
-//   CallSid: "CA64fac4428a7204d429686bd8219a284b",
-//   CallStatus: "ringing",
-//   CallToken:
-//     "%7B%22parentCallInfoToken%22%3A%22eyJhbGciOiJFUzI1NiJ9.eyJjYWxsU2lkIjoiQ0E2NGZhYzQ0MjhhNzIwNGQ0Mjk2ODZiZDgyMTlhMjg0YiIsImZyb20iOiIrMTczNDg5MDE4MTAiLCJ0byI6IisxODMyNzg2MjY1NyIsImlhdCI6IjE2OTkzMTg4NzAifQ.47QVyGi1wn0JPYNh6s2zJpMiO3v3413rIulWsbkC39EqZjZswQJk1tOvMqd54SQvbltidVlo0whPNGgPCtDjlg%22%2C%22identityHeaderTokens%22%3A%5B%5D%7D",
-//   Called: "+18327862657",
-//   CalledCity: "",
-//   CalledCountry: "US",
-//   CalledState: "TX",
-//   CalledZip: "",
-//   Caller: "+17348901810",
-//   CallerCity: "WAYNE",
-//   CallerCountry: "US",
-//   CallerState: "MI",
-//   CallerZip: "48185",
-//   Direction: "inbound",
-//   From: "+17348901810",
-//   FromCity: "WAYNE",
-//   FromCountry: "US",
-//   FromState: "MI",
-//   FromZip: "48185",
-//   StirVerstat: "TN-Validation-Passed-A",
-//   To: "+18327862657",
-//   ToCity: "",
-//   ToCountry: "US",
-//   ToState: "TX",
-//   ToZip: "",
-// };
-// bodyCallStatusChanged = {
-//   Called: "+18327862657",
-//   ToState: "TX",
-//   CallerCountry: "US",
-//   Direction: "inbound",
-//   Timestamp: "Tue, 07 Nov 2023 01:01:13 +0000",
-//   CallbackSource: "call-progress-events",
-//   CallerState: "MI",
-//   ToZip: "",
-//   SequenceNumber: "0",
-//   To: "+18327862657",
-//   CallSid: "CA64fac4428a7204d429686bd8219a284b",
-//   ToCountry: "US",
-//   CallerZip: "48185",
-//   CalledZip: "",
-//   ApiVersion: "2010-04-01",
-//   CallStatus: "completed",
-//   CalledCity: "",
-//   Duration: "1",
-//   From: "+17348901810",
-//   CallDuration: "3",
-//   AccountSid: "AC1feb8c93dd05ee5c790948521f427b55",
-//   CalledCountry: "US",
-//   CallerCity: "WAYNE",
-//   ToCity: "",
-//   FromCountry: "US",
-//   Caller: "+17348901810",
-//   FromCity: "WAYNE",
-//   CalledState: "TX",
-//   FromZip: "48185",
-//   FromState: "MI",
-// };

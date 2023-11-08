@@ -11,6 +11,7 @@ exports.handler = function (context, event, callback) {
 
   var to = event.to;
   if (!to) {
+    //set default client to client call
     client.calls.create(
       {
         url: url,
@@ -27,6 +28,7 @@ exports.handler = function (context, event, callback) {
       }
     );
   } else if (isNumber(to)) {
+    //number to number call
     console.log("Calling number:" + to);
     client.calls.create(
       {
@@ -44,6 +46,7 @@ exports.handler = function (context, event, callback) {
       }
     );
   } else {
+    //client to client
     client.calls.create(
       {
         url: url,

@@ -5,13 +5,13 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:3001");
 
-export default function useSocket() {
+export default function useSocket(isIncoming, setisIncoming) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [fooEvents, setFooEvents] = useState([]);
   const [calls, setcalls] = useState([]);
-  const [currentCall, setcurrentCall] =
-    useState();
-    // { CallSid: "1111" }
+  const [currentCall, setcurrentCall] = useState();
+
+  // { CallSid: "1111" }
 
   useEffect(() => {
     function onConnect() {
@@ -36,9 +36,11 @@ export default function useSocket() {
         // console.log("callComing", value);
         setcurrentCall(value.data);
         setcalls((previous) => [...previous, value]);
+        setisIncoming(true);
       } else {
         setcalls([]);
         setcurrentCall(null);
+        setisIncoming(false);
       }
     }
 

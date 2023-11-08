@@ -106,104 +106,50 @@ router.post("/routeCall", function (req, res, next) {
 
   const twiml = new VoiceResponse();
   twiml.dial().client(clientName);
+  twiml.dial().number();
   res.type("text/xml");
 
   console.log("twiml.toString()", twiml.toString());
   res.send(twiml.toString());
 });
 
-router.post("/clientCall", function (req, res, next) {
-  var recordCall = false;
+router.post("/clientOutbound", function (req, res, next) {
+  // console.log("clientOutbound/", req.body);
+  // var recordCall = false;
+  const to = req.body.to;
+  const from = req.body.from;
 
-  try {
-    client.calls
-      .create({
-        record: recordCall,
-        url: "http://demo.twilio.com/docs/classic.mp3",
-        to: "+17348901810",
-        from: "+18327862657",
-      })
-      .then((call) => {
-        console.log(call.sid);
-        res.send({ sid: call.sid });
-      });
-  } catch (error) {
-    res.send({ err: error });
-  }
+  console.log("to", to);
+  console.log("from", from);
+
+  const twiml = new VoiceResponse();
+  const dial = twiml.dial({ callerId: from });
+  dial.number(to);
+
+  res.type("text/xml");
+  res.send(twiml.toString());
 });
 
+function isNumber(to) {
+  if (to.length == 1) {
+    if (!isNaN(to)) {
+      console.log("It is a 1 digit long number" + to);
+      return true;
+    }
+  } else if (String(to).charAt(0) == "+") {
+    number = to.substring(1);
+    if (!isNaN(number)) {
+      console.log("It is a number " + to);
+      return true;
+    }
+  } else {
+    if (!isNaN(to)) {
+      console.log("It is a number " + to);
+      return true;
+    }
+  }
+  console.log("not a number");
+  return false;
+}
+
 module.exports = router;
-
-// router.post("/twilioCall", function (req, res, next) {
-//   bodyCallComesIn = {
-//     AccountSid: "AC1feb8c93dd05ee5c790948521f427b55",
-//     ApiVersion: "2010-04-01",
-//     CallSid: "CA64fac4428a7204d429686bd8219a284b",
-//     CallStatus: "ringing",
-//     CallToken:
-//       "%7B%22parentCallInfoToken%22%3A%22eyJhbGciOiJFUzI1NiJ9.eyJjYWxsU2lkIjoiQ0E2NGZhYzQ0MjhhNzIwNGQ0Mjk2ODZiZDgyMTlhMjg0YiIsImZyb20iOiIrMTczNDg5MDE4MTAiLCJ0byI6IisxODMyNzg2MjY1NyIsImlhdCI6IjE2OTkzMTg4NzAifQ.47QVyGi1wn0JPYNh6s2zJpMiO3v3413rIulWsbkC39EqZjZswQJk1tOvMqd54SQvbltidVlo0whPNGgPCtDjlg%22%2C%22identityHeaderTokens%22%3A%5B%5D%7D",
-//     Called: "+18327862657",
-//     CalledCity: "",
-//     CalledCountry: "US",
-//     CalledState: "TX",
-//     CalledZip: "",
-//     Caller: "+17348901810",
-//     CallerCity: "WAYNE",
-//     CallerCountry: "US",
-//     CallerState: "MI",
-//     CallerZip: "48185",
-//     Direction: "inbound",
-//     From: "+17348901810",
-//     FromCity: "WAYNE",
-//     FromCountry: "US",
-//     FromState: "MI",
-//     FromZip: "48185",
-//     StirVerstat: "TN-Validation-Passed-A",
-//     To: "+18327862657",
-//     ToCity: "",
-//     ToCountry: "US",
-//     ToState: "TX",
-//     ToZip: "",
-//   };
-//   bodyCallStatusChanged = {
-//     Called: "+18327862657",
-//     ToState: "TX",
-//     CallerCountry: "US",
-//     Direction: "inbound",
-//     Timestamp: "Tue, 07 Nov 2023 01:01:13 +0000",
-//     CallbackSource: "call-progress-events",
-//     CallerState: "MI",
-//     ToZip: "",
-//     SequenceNumber: "0",
-//     To: "+18327862657",
-//     CallSid: "CA64fac4428a7204d429686bd8219a284b",
-//     ToCountry: "US",
-//     CallerZip: "48185",
-//     CalledZip: "",
-//     ApiVersion: "2010-04-01",
-//     CallStatus: "completed",
-//     CalledCity: "",
-//     Duration: "1",
-//     From: "+17348901810",
-//     CallDuration: "3",
-//     AccountSid: "AC1feb8c93dd05ee5c790948521f427b55",
-//     CalledCountry: "US",
-//     CallerCity: "WAYNE",
-//     ToCity: "",
-//     FromCountry: "US",
-//     Caller: "+17348901810",
-//     FromCity: "WAYNE",
-//     CalledState: "TX",
-//     FromZip: "48185",
-//     FromState: "MI",
-//   };
-
-//   console.log("twilioCall body", req.body);
-
-//   const twiml = new VoiceResponse();
-//   twiml.say({ voice: "man", loop: 1000 }, "Thank you for calling The R");
-//   res.type("text/xml");
-//   res.send(twiml.toString());
-
-//   // res.send({ status: "hi twilio" });
-// });

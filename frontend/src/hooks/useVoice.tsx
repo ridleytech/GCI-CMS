@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Device } from "@twilio/voice-sdk";
 
-function useVoice(socket) {
+function useVoice(socket, isIncoming, setisIncoming) {
   const initialized = useRef(false);
   const [token, settoken] = useState("");
   const [device, setdevice] = useState(null);
@@ -178,6 +178,28 @@ function useVoice(socket) {
     setcurrentVoiceCall(null);
   };
 
+  const makeCall = async () => {
+    var params = {
+      To: "+17348901810",
+      aCustomParameter: "the value of your custom parameter",
+    };
+
+    const call = await device.connect({ params });
+
+    setcurrentVoiceCall(call);
+    setisIncoming(false);
+
+    // console.log(call.parameters);
+
+    // PRINTS:
+    // {}
+
+    // For outgoing calls, the "accept" event is emitted when the Call's media session has finished setting up.
+    call.on("accept", () => {
+      console.log("make call accept", call.parameters);
+    });
+  };
+
   const createDevice = () => {
     if (!device) {
       const newDevice = new Device(token, {
@@ -208,6 +230,7 @@ function useVoice(socket) {
     createDevice,
     manageCall,
     endCall,
+    makeCall,
   };
 }
 

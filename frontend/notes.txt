@@ -7,3 +7,5 @@ https://www.youtube.com/watch?v=4jUMqutYmyE
 
 CREATE A CALL CENTER IN 15 MINUTES USING NODEJS , TWILIO , SOCKET.IO
 https://www.youtube.com/watch?v=VvxB_TPj3DY
+
+https://www.g2.com/articles/what-is-an-auto-dialer

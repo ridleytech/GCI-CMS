@@ -5,9 +5,14 @@ import { useDispatch } from "react-redux";
 
 function VoiceTest() {
   const initialized = useRef(false);
-  const socket = useSocket();
-  const voice = useVoice(socket);
+  const [isIncoming, setisIncoming] = useState(true);
+
+  const socket = useSocket(isIncoming, setisIncoming);
+  const voice = useVoice(socket, isIncoming, setisIncoming);
   const dispatch = useDispatch();
+
+  const dialList = ["7348901810", "3132416387"];
+  const [callIndex, setCallIndex] = useState(0);
 
   useEffect(() => {
     // console.log("init");
@@ -38,7 +43,7 @@ function VoiceTest() {
         </button>
       ) : null}
 
-      {socket.currentCall ? (
+      {isIncoming && socket.currentCall ? (
         <>
           <div style={{ marginBottom: 10 }}>
             Incoming Call: {socket.currentCall.From}
@@ -64,9 +69,30 @@ function VoiceTest() {
             )}
           </div>
         </>
-      ) : (
-        <div></div>
-      )}
+      ) : null}
+
+      {!isIncoming && voice.currentVoiceCall ? (
+        <>
+          <div style={{ marginBottom: 10 }}>
+            Outgoing Call: {voice.currentVoiceCall.customParameters.get("To")}
+          </div>
+          <div>
+            {voice.currentVoiceCall ? (
+              <>
+                <button onClick={() => voice.endCall()}>End</button>
+              </>
+            ) : null}
+          </div>
+        </>
+      ) : null}
+
+      {voice.device && !voice.currentVoiceCall && !socket.currentCall ? (
+        <div>
+          <button style={{ marginRight: 10 }} onClick={() => voice.makeCall()}>
+            Make Call
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
