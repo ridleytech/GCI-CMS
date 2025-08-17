@@ -1,0 +1,79 @@
+https://www.youtube.com/watch?v=l-wLCfLDrNc
+https://pusher.com/tutorials/callkit-ios-part-1/#introduction
+https://medium.com/@adi.mizrahi/swift-callkit-and-how-we-use-it-2df1735f9c6d
+https://developer.apple.com/forums/thread/50415
+https://github.com/twilio/voice-quickstart-ios
+
+
+twilio plugins:install @twilio-labs/plugin-serverless
+
+twilio profiles:use ridleytech
+
+twilio api:core:applications:create \
+    --friendly-name=gulfcoast-twiml-app \
+    --voice-method=POST \
+    --voice-url="https://gulfcoast-dev.twil.io/make-call"
+
+APc652de95eb8b7c925c897274a565095c  gulfcoast-twiml-app  Sep 27 2023 18:15:14 GMT-0500
+
+$ twilio api:chat:v2:credentials:create \
+    --type=apn \
+    --sandbox \
+    --friendly-name="voice-push-credential (sandbox)" \
+    --certificate="$(cat cert.pem)" \
+    --private-key="$(cat key.pem)"
+
+CR9553097343e4f8024c050c345e987dbc  voice-push-credential (sandbox)  apn 
+
+twilio token:voice \
+    --identity=alice \
+    --voice-app-sid=APc652de95eb8b7c925c897274a565095c \
+    --push-credential-sid=CR9553097343e4f8024c050c345e987dbc
+
+
+Copy/paste this voice token into your test application:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzU0YzFkNWZiNGQyYmUxY2JjMzkzZjc4MzEzYjZmY2E1LTE2OTU4NTg1MjUiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJhbGljZSIsInZvaWNlIjp7ImluY29taW5nIjp7ImFsbG93Ijp0cnVlfSwib3V0Z29pbmciOnsiYXBwbGljYXRpb25fc2lkIjoiQVBjNjUyZGU5NWViOGI3YzkyNWM4OTcyNzRhNTY1MDk1YyJ9LCJwdXNoX2NyZWRlbnRpYWxfc2lkIjoiQ1I5NTUzMDk3MzQzZTRmODAyNGMwNTBjMzQ1ZTk4N2RiYyJ9fSwiaWF0IjoxNjk1ODU4NTI1LCJleHAiOjE2OTU4NjIxMjUsImlzcyI6IlNLNTRjMWQ1ZmI0ZDJiZTFjYmMzOTNmNzgzMTNiNmZjYTUiLCJzdWIiOiJBQzFmZWI4YzkzZGQwNWVlNWM3OTA5NDg1MjFmNDI3YjU1In0.S6SGHGnVN-0eIttoqd5zXBJxzExvLjA9xTlAeStfv8E
+
+
+
+twilio serverless:deploy
+
+Deploying functions & assets to the Twilio Runtime
+
+Username        SK54c1d5fb4d2be1cbc393f78313b6fca5
+Password        hWvt****************************
+Service Name    quickstart
+Environment     dev
+Root Directory  /Users/rr/Downloads/voice-quickstart-ios-master/Server
+Dependencies
+Env Variables   API_KEY_SID, API_SECRET, APP_SID, PUSH_CREDENTIAL_SID
+Runtime         default
+
+✔ Serverless project successfully deployed
+
+Deployment Details
+Domain: quickstart-8494-dev.twil.io
+Service:
+   quickstart (ZS9e1606f27234a57ad497f9211b5239cb)
+Environment:
+   dev (ZE50700039cfe20e00ea7b41ebf98ce4f7)
+Build SID:
+   ZB81d7341cec275250de4d3e51b72f7aa4
+Runtime:
+   node16
+View Live Logs:
+   https://www.twilio.com/console/functions/editor/ZS9e1606f27234a57ad497f9211b5239cb/environment/ZE50700039cfe20e00ea7b41ebf98ce4f7
+Functions:
+   https://quickstart-8494-dev.twil.io/access-token
+   https://quickstart-8494-dev.twil.io/hello-world
+   https://quickstart-8494-dev.twil.io/incoming
+   https://quickstart-8494-dev.twil.io/make-call
+   https://quickstart-8494-dev.twil.io/place-call
+Assets:
+   https://quickstart-8494-dev.twil.io/index.html
+   https://quickstart-8494-dev.twil.io/style.css
+
+
+   13462609987
+
+   https://quickstart-8494-dev.twil.io/place-call?to=alice

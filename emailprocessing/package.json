@@ -1,0 +1,22 @@
+{
+  "name": "gulf-coast-investments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "excel4node": "^1.8.2",
+    "install": "^0.13.0",
+    "json-concat": "^0.0.1",
+    "mongodb": "^4.10.0",
+    "node-fetch": "^2.7.0",
+    "npm": "^10.1.0"
+  }
+}

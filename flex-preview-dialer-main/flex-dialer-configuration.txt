@@ -1,0 +1,73 @@
+AUTH e803c6423f3e964e42059b946052d22b
+
+"Gulf Coast": {
+    "accountSid": "AC004b23ef71a05d087bb0d97dd5a6c4ca",
+    "apiKey": "SK475eb6455df8ac341b16490a45680384",
+    "apiSecret": "fPKaUVPCF1Dl4AqYyhveYkeasK9ZAGqp"
+}
+
+
+twilio profiles:use Gulf\ Coast
+
+
+twilio api:taskrouter:v1:workspaces:list
+
+response:
+
+SID                                 Friendly Name         Prioritize Queue Order
+WS5264e034b9a55fc4a83b0267c5675508  Flex Task Assignment  FIFO      
+
+
+twilio api:taskrouter:v1:workspaces:task-channels:create --friendly-name "gc-preview-dialer" --unique-name "gulfcoastpreviewdialer" --workspace-sid WS5264e034b9a55fc4a83b0267c5675508
+
+response: 
+
+SID                                 Friendly Name      Date Created                 
+TCa4f9b0ab26dd8d9eb1a8a0d784c6d9e9  gc-preview-dialer  Oct 13 2023 09:08:22 GMT-0500
+
+
+twilio api:taskrouter:v1:workspaces:workflows:list --friendly-name="Assign to Anyone" --workspace-sid WS5264e034b9a55fc4a83b0267c5675508
+
+response:
+
+SID                                 Friendly Name     Document Content Type
+WWc8f8106b91f5319bd6fabe5b669d9218  Assign to Anyone  null                 
+
+
+twilio api:taskrouter:v1:workspaces:task-queues:list --workspace-sid WS5264e034b9a55fc4a83b0267c5675508
+
+response:
+
+SID                                 Friendly Name  Task Order
+WQ2c32b219e30b33d4712efbe6b4efdedf  Everyone       FIFO   
+
+
+CONFIGURATION=$(cat << EOF
+{
+  "task_routing": {
+    "filters": [
+      {
+        "filter_friendly_name": "Preview Dialer",
+        "expression": "type = \"preview-dialer\"",
+        "targets": [
+          {
+            "queue": "WQ2c32b219e30b33d4712efbe6b4efdedf",
+            "expression": "(taskrouter.dayOfWeek IN task.schedule.week) AND (taskrouter.currentTime > task.schedule.startHour) AND\n(taskrouter.currentTime < task.schedule.endHour)"
+          }
+        ]
+      }
+    ],
+    "default_filter": {
+      "queue": "WQ2c32b219e30b33d4712efbe6b4efdedf"
+    }
+  }
+}
+EOF
+)
+
+twilio api:taskrouter:v1:workspaces:workflows:update --sid="WWc8f8106b91f5319bd6fabe5b669d9218" --workspace-sid="WS5264e034b9a55fc4a83b0267c5675508" --configuration "$CONFIGURATION"
+
+response:
+
+SID                                 Friendly Name     Document Content Type
+WWc8f8106b91f5319bd6fabe5b669d9218  Assign to Anyone  null   
